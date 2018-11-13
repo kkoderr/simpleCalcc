@@ -1,11 +1,12 @@
 from tkinter import *
 
 root = Tk()
+root.resizable(0,0)
 root.title("Basic Calculator")
 
 disp_val = StringVar()
 btn_val = ""
-history = " "
+history = ""
 
 #displays key value
 def on_key_press(val):
@@ -20,11 +21,17 @@ def on_equal_press():
     try:
         history += '\n' + btn_val
         evaluation = str(eval(btn_val))
+        btn_val = evaluation
         disp_val.set(evaluation)
     except SyntaxError:
         disp_val.set("SyntaxError")
     except ZeroDivisionError:
         disp_val.set("undefined")
+
+#returns the squar of a value
+def sqr_func():
+    sqr_val = str(float(btn_val) * float(btn_val))
+    disp_val.set(sqr_val)
 
 
 def show_history():
@@ -103,13 +110,17 @@ clear = Button(root, text="C", width=10, height=2)
 clear.bind("<Button-1>", lambda x: on_clear_press())
 clear.grid(row=1, column=3)
 
-his_btn = Button(root, text="HIST.", width=10, height=2)
-his_btn.bind("<Button-1>", lambda x: show_history())
-his_btn.grid(row=4, column=0)
+hist_btn = Button(root, text="HIST", width=10, height=2)
+hist_btn.bind("<Button-1>", lambda x: show_history())
+hist_btn.grid(row=4, column=0)
 
-equal = Button(root, text="=", width=10, height=2)
+sqr = Button(root, text="SQR", width=10, height=2)
+sqr.bind("<Button-1>", lambda x: sqr_func())
+sqr.grid(row=5, column=3)
+
+equal = Button(root, text="=", width=35, height=2)
 equal.bind("<Button-1>", lambda x: on_equal_press())
-equal.grid(row=5, column=3)
+equal.grid(row=5, columnspan=3)
 
 
 root.mainloop()
